@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Research Topic Network</title>
+  <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+  <style>
+    #network {
+      width: 100%;
+      height: 90vh;
+      border: 1px solid lightgray;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.5);
+    }
+    .modal-content {
+      background-color: #fefefe;
+      margin: 10% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 60%;
+      border-radius: 8px;
+    }
+    .close {
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<h2 style="text-align:center">Research Topic Network</h2>
+<div id="network"></div>
+
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="document.getElementById('myModal').style.display='none'">&times;</span>
+    <h2 id="modal-title"></h2>
+    <p id="modal-description"></p>
+    <ul id="modal-publications"></ul>
+  </div>
+</div>
+
+<script>
+  const nodes = new vis.DataSet([
+    { id: 1, label: 'Disability', group: 'core' },
+    { id: 2, label: 'Embodiment', group: 'core' },
+    { id: 3, label: 'Epistemic Justice', group: 'core' },
+    { id: 4, label: 'Pain and Empathy', group: 'core' },
+    { id: 5, label: 'Disability × Embodiment' },
+    { id: 6, label: 'Disability × Epistemic Justice' },
+    { id: 7, label: 'Embodiment × Pain and Empathy' },
+    { id: 8, label: 'Epistemic Justice × Pain and Empathy' },
+    { id: 9, label: 'Disability × Pain and Empathy' },
+    { id: 10, label: 'Disability × Embodiment × Epistemic Justice × Pain and Empathy' }
+  ]);
+
+  const edges = new vis.DataSet([
+    { from: 1, to: 5 },
+    { from: 2, to: 5 },
+    { from: 1, to: 6 },
+    { from: 3, to: 6 },
+    { from: 2, to: 7 },
+    { from: 4, to: 7 },
+    { from: 3, to: 8 },
+    { from: 4, to: 8 },
+    { from: 1, to: 9 },
+    { from: 4, to: 9 },
+    { from: 1, to: 10 },
+    { from: 2, to: 10 },
+    { from: 3, to: 10 },
+    { from: 4, to: 10 }
+  ]);
+
+  const data = { nodes, edges };
+
+  const options = {
+    nodes: {
+      shape: 'dot',
+      size: 20,
+      font: { size: 16 }
+    },
+    groups: {
+      core: {
+        color: { background: '#3366cc', border: '#224499' },
+        font: { color: 'white', size: 18, face: 'Arial' },
+        size: 30
+      }
+    },
+    physics: {
+      stabilization: true,
+      barnesHut: {
+        gravitationalConstant: -3000,
+        centralGravity: 0.3,
+        springLength: 200,
+        springConstant: 0.04,
+        damping: 0.09
+      }
+    }
+  };
+
+  const network = new vis.Network(document.getElementById('network'), data, options);
+
+  const nodeInfo = {
+    1: {
+      title: 'Disability',
+      description: 'Exploring the lived experience and societal framing of disability.',
+      publications: ['Publication A on Disability', 'Publication B on Disability']
+    },
+    2: {
+      title: 'Embodiment',
+      description: 'The role of the body in ethical perception and moral agency.',
+      publications: ['Publication A on Embodiment', 'Publication B on Embodiment']
+    },
+    3: {
+      title: 'Epistemic Justice',
+      description: 'Concerned with whose knowledge is recognized and trusted in healthcare.',
+      publications: ['Publication A on Epistemic Justice']
+    },
+    4: {
+      title: 'Pain and Empathy',
+      description: 'How suffering is understood and responded to in clinical contexts.',
+      publications: ['Publication A on Pain and Empathy']
+    },
+    5: {
+      title: 'Disability × Embodiment',
+      description: 'Intersection of physical experience and disability studies.',
+      publications: ['Placeholder publication']
+    },
+    6: {
+      title: 'Disability × Epistemic Justice',
+      description: 'How disabled individuals are often excluded from knowledge production.',
+      publications: ['Placeholder publication']
+    },
+    7: {
+      title: 'Embodiment × Pain and Empathy',
+      description: 'Affective dimensions of embodied suffering.',
+      publications: ['Placeholder publication']
+    },
+    8: {
+      title: 'Epistemic Justice × Pain and Empathy',
+      description: 'Recognition of suffering as epistemically significant.',
+      publications: ['Placeholder publication']
+    },
+    9: {
+      title: 'Disability × Pain and Empathy',
+      description: 'Witnessing and representing chronic pain experiences.',
+      publications: ['Placeholder publication']
+    },
+    10: {
+      title: 'Disability × Embodiment × Epistemic Justice × Pain and Empathy',
+      description: 'The full terrain of your research practice.',
+      publications: ['Placeholder publication']
+    }
+  };
+
+  network.on('click', function (params) {
+    if (params.nodes.length === 1) {
+      const nodeId = params.nodes[0];
+      const info = nodeInfo[nodeId];
+      if (info) {
+        document.getElementById('modal-title').textContent = info.title;
+        document.getElementById('modal-description').textContent = info.description;
+        const pubList = document.getElementById('modal-publications');
+        pubList.innerHTML = '';
+        info.publications.forEach(pub => {
+          const li = document.createElement('li');
+          li.textContent = pub;
+          pubList.appendChild(li);
+        });
+        document.getElementById('myModal').style.display = 'block';
+      }
+    }
+  });
+</script>
+</body>
+</html>
