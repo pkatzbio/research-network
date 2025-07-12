@@ -94,17 +94,19 @@
       font: { color: 'white', size: 18, face: 'Arial' }
     }
   },
-    physics: {
-      stabilization: true,
-      barnesHut: {
-        gravitationalConstant: -5000,
-        centralGravity: 0.3,
-        springLength: 400,
-        springConstant: 0.04,
-        damping: 0.09
-      }
+   ayout: {
+    hierarchical: {
+      direction: 'LR',     // left-to-right
+      sortMethod: 'directed',
+      levelSeparation: 300
     }
-  };
+  },
+  physics: {
+    hierarchicalRepulsion: {
+      nodeDistance: 200
+    }
+  }
+};
 
   const network = new vis.Network(document.getElementById('network'), data, options);
 
