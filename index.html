@@ -92,7 +92,8 @@
   ]);
 
   const data = { nodes, edges };
-
+ const radius = 300;
+const centerX = 0, centerY = 0;
   const options = {
   nodes: {
     color: {
@@ -114,8 +115,7 @@
       levelSeparation: 300
     }
   },
- const radius = 300;
-const centerX = 0, centerY = 0;
+
 
 nodes.forEach(n => {
   const angle = (n.id - 1) * (2 * Math.PI) / nodes.length;
