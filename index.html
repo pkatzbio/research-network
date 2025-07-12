@@ -2,58 +2,36 @@
 <html>
 <head>
   <title>Research Topic Network</title>
-  <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+  <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
   <style>
-    #network {
-      width: 100%;
-      height: 90vh;
-      border: 1px solid lightgray;
+    body { font-family: Arial, sans-serif; text-align: center; }
+    #network { width: 100%; height: 80vh; border: 1px solid lightgray; margin: 0 auto; }
+    #legend { margin: 20px auto; width: 300px; text-align: left; }
+    .legend-square {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      margin-right: 6px;
+      vertical-align: middle;
     }
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.5);
-    }
-    .modal-content {
-      background-color: #fefefe;
-      margin: 10% auto;
-      padding: 20px;
-      border: 1px solid #888;
-      width: 60%;
-      border-radius: 8px;
-    }
-    .close {
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+    .legend-label { line-height: 14px; margin-right: 20px; }
+    .modal { /* (optional) keep your modal styles if needed */ }
   </style>
 </head>
 <body>
 
-<h2 style="text-align:center">Research Themes</h2>
+<h2>Research Topic Network</h2>
+<div id="network"></div>
 
-  <div id="legend" style="margin-top:20px; font-family: Arial, sans-serif;">
-  <strong>Legend</strong><br>
-  <span style="display:inline-block; width:12px;
-               height:12px; background:#51675d;
-               border:1px solid #38463f;"></span>
-    Core Topic<br>
-  <span style="display:inline-block; width:12px;
-               height:12px; background:#6B7F77;
-               border:1px solid #51675d;"></span>
-    Intersection Node
+<div id="legend">
+  <strong>Legend:</strong><br>
+  <span class="legend-square" style="background:#51675d; border:1px solid #38463f;"></span>
+    <span class="legend-label">Core Topic</span>
+  <span class="legend-square" style="background:#6B7F77; border:1px solid #51675d;"></span>
+    <span class="legend-label">Intersection</span>
 </div>
-  
-  <div id="network"></div>
 
+<!-- Keep your modal HTML here if you're using popups -->
 <div id="myModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="document.getElementById('myModal').style.display='none'">&times;</span>
@@ -64,151 +42,107 @@
 </div>
 
 <script>
+  // -- Data definition --
   const nodes = new vis.DataSet([
-    { id: 1, label: 'Disability', group: 'core' },
-    { id: 2, label: 'Embodiment', group: 'core' },
-    { id: 3, label: 'Epistemic Justice', group: 'core' },
-    { id: 4, label: 'Pain and Empathy', group: 'core' },
-    { id: 5, label: 'Disability × Embodiment' },
-    { id: 6, label: 'Disability × Epistemic Justice' },
-    { id: 7, label: 'Embodiment × Pain and Empathy' },
-    { id: 8, label: 'Epistemic Justice × Pain and Empathy' },
-    { id: 9, label: 'Disability × Pain and Empathy' },
-    
+    { id:1, label:'Disability' },
+    { id:2, label:'Embodiment' },
+    { id:3, label:'Epistemic Justice' },
+    { id:4, label:'Pain and Empathy' },
+    { id:5, label:'Disability × Embodiment' },
+    { id:6, label:'Disability × Epistemic Justice' },
+    { id:7, label:'Embodiment × Pain and Empathy' },
+    { id:8, label:'Epistemic Justice × Pain and Empathy' },
+    { id:9, label:'Disability × Pain and Empathy' }
   ]);
-
   const edges = new vis.DataSet([
-    { from: 1, to: 5 },
-    { from: 2, to: 5 },
-    { from: 1, to: 6 },
-    { from: 3, to: 6 },
-    { from: 2, to: 7 },
-    { from: 4, to: 7 },
-    { from: 3, to: 8 },
-    { from: 4, to: 8 },
-    { from: 1, to: 9 },
-    { from: 4, to: 9 },
- 
+    { from:1, to:5 }, { from:2, to:5 },
+    { from:1, to:6 }, { from:3, to:6 },
+    { from:2, to:7 }, { from:4, to:7 },
+    { from:3, to:8 }, { from:4, to:8 },
+    { from:1, to:9 }, { from:4, to:9 }
   ]);
 
-  const data = { nodes, edges };
- const radius = 300;
-const centerX = 0, centerY = 0;
-  const options = {
-  nodes: {
-    color: {
-      background: '#6B7F77',   // option 1 (lighter brand)
-      border: '#51675d'
-    }
-  },
-  groups: {
-    core: {
-      shape: 'box',
-      color: { background: '#51675d', border: '#38463f' },
-      font: { color: 'white', size: 18, face: 'Arial' }
-    }
-  },
-   layout: {
-    hierarchical: {
-      direction: 'LR',     // left-to-right
-      sortMethod: 'directed',
-      levelSeparation: 300
-    }
-  },
-
-
-nodes.forEach(n => {
-  const angle = (n.id - 1) * (2 * Math.PI) / nodes.length;
-  nodes.update({
-    id: n.id,
-    x: centerX + radius * Math.cos(angle),
-    y: centerY + radius * Math.sin(angle),
-    fixed: { x: true, y: true }
+  // -- Fixed radial positions --
+  const radius = 300;
+  const center = { x: 0, y: 0 };
+  const total = nodes.length;
+  nodes.forEach(node => {
+    const angle = ((node.id - 1) / total) * 2 * Math.PI;
+    nodes.update({
+      id: node.id,
+      x: center.x + radius * Math.cos(angle),
+      y: center.y + radius * Math.sin(angle),
+      fixed: { x:true, y:true }
+    });
   });
-});
 
-const options = {
-  physics: { enabled: false },  // completely disable the physics engine
-  interaction: {
-    hover: true,
-    hoverConnectedEdges: true,
-    dragView: true,
-    zoomView: true,
-    navigationButtons: true
-  },
-  edges: { smooth: false },
-  // ... your existing nodes, groups, etc. ...
-};
-
-  const network = new vis.Network(document.getElementById('network'), data, options);
-
-  const nodeInfo = {
-    1: {
-      title: 'Disability',
-      description: 'Exploring the lived experience and societal framing of disability.',
-      publications: ['Publication A on Disability', 'Publication B on Disability']
+  // -- Network options --
+  const options = {
+    physics: { enabled: false },
+    interaction: {
+      hover: true,
+      hoverConnectedEdges: true,
+      dragView: true,
+      zoomView: true,
+      navigationButtons: true
     },
-    2: {
-      title: 'Embodiment',
-      description: 'The role of the body in ethical perception and moral agency.',
-      publications: ['Publication A on Embodiment', 'Publication B on Embodiment']
+    nodes: {
+      shape: 'dot',
+      size: 30,
+      font: { size: 16 },
+      color: {
+        background: '#6B7F77',
+        border: '#51675d'
+      }
     },
-    3: {
-      title: 'Epistemic Justice',
-      description: 'Concerned with whose knowledge is recognized and trusted in healthcare.',
-      publications: ['Publication A on Epistemic Justice']
-    },
-    4: {
-      title: 'Pain and Empathy',
-      description: 'How suffering is understood and responded to in clinical contexts.',
-      publications: ['Publication A on Pain and Empathy']
-    },
-    5: {
-      title: 'Disability × Embodiment',
-      description: 'Intersection of physical experience and disability studies.',
-      publications: ['Placeholder publication']
-    },
-    6: {
-      title: 'Disability × Epistemic Justice',
-      description: 'How disabled individuals are often excluded from knowledge production.',
-      publications: ['Placeholder publication']
-    },
-    7: {
-      title: 'Embodiment × Pain and Empathy',
-      description: 'Affective dimensions of embodied suffering.',
-      publications: ['Placeholder publication']
-    },
-    8: {
-      title: 'Epistemic Justice × Pain and Empathy',
-      description: 'Recognition of suffering as epistemically significant.',
-      publications: ['Placeholder publication']
-    },
-    9: {
-      title: 'Disability × Pain and Empathy',
-      description: 'Witnessing and representing chronic pain experiences.',
-      publications: ['Placeholder publication']
+    edges: { smooth: false },
+    groups: {
+      core: {
+        shape: 'box',
+        color: { background:'#51675d', border:'#38463f' },
+        font: { color:'white', size:18, face:'Arial' }
+      }
     }
   };
-  
 
-  network.on('click', function (params) {
-    if (params.nodes.length === 1) {
-      const nodeId = params.nodes[0];
-      const info = nodeInfo[nodeId];
-      if (info) {
+  // Apply group assignments (first four nodes are core)
+  for(let i = 1; i <= 4; i++) {
+    nodes.update({ id:i, group:'core' });
+  }
+
+  const data = { nodes, edges };
+  const network = new vis.Network(document.getElementById('network'), data, options);
+
+  // -- Pop-up logic --
+  const nodeInfo = {
+    1: { title:'Disability', description:'...', publications:['Pub A','Pub B'] },
+    2: { title:'Embodiment', description:'...', publications:['Pub A','Pub B'] },
+    3: { title:'Epistemic Justice', description:'...', publications:['Pub A'] },
+    4: { title:'Pain and Empathy', description:'...', publications:['Pub A'] },
+    5: { title:'Dis × Embodiment', description:'...', publications:['Placeholder'] },
+    6: { title:'Dis × Epi Justice', description:'...', publications:['Placeholder'] },
+    7: { title:'Emb × Pain/Empathy', description:'...', publications:['Placeholder'] },
+    8: { title:'Epi Justice × Pain/Empathy', description:'...', publications:['Placeholder'] },
+    9: { title:'Dis × Pain/Empathy', description:'...', publications:['Placeholder'] }
+  };
+  network.on('click', params => {
+    if(params.nodes.length === 1) {
+      const info = nodeInfo[params.nodes[0]];
+      if(info) {
         document.getElementById('modal-title').textContent = info.title;
         document.getElementById('modal-description').textContent = info.description;
-        const pubList = document.getElementById('modal-publications');
-        pubList.innerHTML = '';
+        const ul = document.getElementById('modal-publications');
+        ul.innerHTML = '';
         info.publications.forEach(pub => {
           const li = document.createElement('li');
           li.textContent = pub;
-          pubList.appendChild(li);
+          ul.appendChild(li);
         });
         document.getElementById('myModal').style.display = 'block';
       }
     }
   });
 </script>
+
 </body>
 </html>
