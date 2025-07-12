@@ -39,7 +39,20 @@
 <body>
 
 <h2 style="text-align:center">Research Themes</h2>
-<div id="network"></div>
+
+  <div id="legend" style="margin-top:20px; font-family: Arial, sans-serif;">
+  <strong>Legend</strong><br>
+  <span style="display:inline-block; width:12px;
+               height:12px; background:#51675d;
+               border:1px solid #38463f;"></span>
+    Core Topic<br>
+  <span style="display:inline-block; width:12px;
+               height:12px; background:#6B7F77;
+               border:1px solid #51675d;"></span>
+    Intersection Node
+</div>
+  
+  <div id="network"></div>
 
 <div id="myModal" class="modal">
   <div class="modal-content">
@@ -101,11 +114,30 @@
       levelSeparation: 300
     }
   },
-  physics: {
-    hierarchicalRepulsion: {
-      nodeDistance: 200
-    }
-  }
+ const radius = 300;
+const centerX = 0, centerY = 0;
+
+nodes.forEach(n => {
+  const angle = (n.id - 1) * (2 * Math.PI) / nodes.length;
+  nodes.update({
+    id: n.id,
+    x: centerX + radius * Math.cos(angle),
+    y: centerY + radius * Math.sin(angle),
+    fixed: { x: true, y: true }
+  });
+});
+
+const options = {
+  physics: { enabled: false },  // completely disable the physics engine
+  interaction: {
+    hover: true,
+    hoverConnectedEdges: true,
+    dragView: true,
+    zoomView: true,
+    navigationButtons: true
+  },
+  edges: { smooth: false },
+  // ... your existing nodes, groups, etc. ...
 };
 
   const network = new vis.Network(document.getElementById('network'), data, options);
