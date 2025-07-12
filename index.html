@@ -126,22 +126,38 @@
     9: { title:'Dis × Pain/Empathy', description:'...', publications:['Placeholder'] }
   };
   network.on('click', params => {
-    if(params.nodes.length === 1) {
-      const info = nodeInfo[params.nodes[0]];
-      if(info) {
-        document.getElementById('modal-title').textContent = info.title;
-        document.getElementById('modal-description').textContent = info.description;
-        const ul = document.getElementById('modal-publications');
-        ul.innerHTML = '';
-        info.publications.forEach(pub => {
-          const li = document.createElement('li');
-          li.textContent = pub;
-          ul.appendChild(li);
-        });
-        document.getElementById('myModal').style.display = 'block';
-      }
-    }
-  });
+  if (params.nodes.length === 1) {
+    const nodeId = params.nodes[0];
+    const info = nodeInfo[nodeId];
+    if (!info) return;
+
+    // Zoom and center on the clicked node
+    network.focus(nodeId, {
+      scale: 1.5,
+      animation: { duration: 500, easingFunction: 'easeInOutQuad' }
+    });
+
+    // After zoom animation completes, show the modal
+    setTimeout(() => {
+      document.getElementById('modal-title').textContent = info.title;
+      document.getElementById('modal-description').textContent = info.description;
+      const ul = document.getElementById('modal-publications');
+      ul.innerHTML = '';
+      info.publications.forEach(pub => {
+        const li = document.createElement('li');
+        li.textContent = pub;
+        ul.appendChild(li);
+      });
+      document.getElementById('myModal').style.display = 'block';
+    }, 600); // Delay slightly longer than animation duration
+  window.addEventListener('click', event => {
+  const modal = document.getElementById('myModal');
+  if (event.target === modal) {
+    modal.style.display = 'none';
+  }
+});
+  }
+});
 </script>
 
 </body>
