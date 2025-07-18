@@ -128,7 +128,7 @@ coreIds.forEach(id => {
   nodes.update({ id: id, group: 'core' });
 });
 
-  const data = { nodes, edges };
+  
   const network = new vis.Network(document.getElementById('network'), data, options);
 
   // -- Pop-up logic --
