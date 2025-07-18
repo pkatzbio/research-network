@@ -122,6 +122,10 @@ nodeArray.forEach((node, idx) => {
     }
   };
 
+const data = { nodes, edges };
+const network = new vis.Network(document.getElementById('network'), data, options);
+
+  
   // Apply group assignments (first four nodes are core)
 const coreIds = [1, 3, 5, 7];
 coreIds.forEach(id => {
