@@ -63,39 +63,35 @@
 </div>
 
 <script>
-  // -- Data definition --
-  const nodes = new vis.DataSet([
-    { id:1, label:'Disability' },
-    { id:2, label:'Embodiment' },
-    { id:3, label:'Epistemic Justice' },
-    { id:4, label:'Pain and Empathy' },
-    { id:5, label:'Disability × Embodiment' },
-    { id:6, label:'Disability × Epistemic Justice' },
-    { id:7, label:'Embodiment × Pain and Empathy' },
-    { id:8, label:'Epistemic Justice × Pain and Empathy' },
-    { id:9, label:'Disability × Pain and Empathy' }
-  ]);
-  const edges = new vis.DataSet([
-    { from:1, to:5 }, { from:2, to:5 },
-    { from:1, to:6 }, { from:3, to:6 },
-    { from:2, to:7 }, { from:4, to:7 },
-    { from:3, to:8 }, { from:4, to:8 },
-    { from:1, to:9 }, { from:4, to:9 }
-  ]);
+ // Define your nodes with explicit order
+const nodes = new vis.DataSet([
+  { id: 1, label: 'Disability', order: 1 },
+  { id: 2, label: 'Embodiment', order: 3 },
+  { id: 3, label: 'Epistemic Justice', order: 5 },
+  { id: 4, label: 'Pain and Empathy', order: 7 },
+  { id: 5, label: 'Disability × Embodiment', order: 2 },
+  { id: 6, label: 'Disability × Epistemic Justice', order: 4 },
+  { id: 7, label: 'Embodiment × Pain and Empathy', order: 6 },
+  { id: 8, label: 'Epistemic Justice × Pain and Empathy', order: 8 },
+  { id: 9, label: 'Disability × Pain and Empathy', order: 9 }
+]);
 
-  // -- Fixed radial positions --
-  const radius = 300;
-  const center = { x: 0, y: 0 };
-  const total = nodes.length;
-  nodes.forEach(node => {
-    const angle = ((node.id - 1) / total) * 2 * Math.PI;
-    nodes.update({
-      id: node.id,
-      x: center.x + radius * Math.cos(angle),
-      y: center.y + radius * Math.sin(angle),
-      fixed: { x:true, y:true }
-    });
+const radius = 300;
+const center = { x: 0, y: 0 };
+
+// Get nodes as plain object array, sort them by your preferred order
+const nodeArray = nodes.get().sort((a, b) => a.order - b.order);
+
+// Update positions based on that sorted order
+nodeArray.forEach((node, idx) => {
+  const angle = (idx / nodeArray.length) * 2 * Math.PI;
+  nodes.update({
+    id: node.id,
+    x: center.x + radius * Math.cos(angle),
+    y: center.y + radius * Math.sin(angle),
+    fixed: { x: true, y: true }
   });
+});
 
   // -- Network options --
   const options = {
@@ -127,9 +123,10 @@
   };
 
   // Apply group assignments (first four nodes are core)
-  for(let i = 1; i <= 4; i++) {
-    nodes.update({ id:i, group:'core' });
-  }
+const coreIds = [1, 3, 5, 7];
+coreIds.forEach(id => {
+  nodes.update({ id: id, group: 'core' });
+});
 
   const data = { nodes, edges };
   const network = new vis.Network(document.getElementById('network'), data, options);
