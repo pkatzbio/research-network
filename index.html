@@ -69,14 +69,14 @@ const nodes = new vis.DataSet([
   { id: 2, label: 'Embodiment', order: 3 },
   { id: 3, label: 'Language', order: 5 },
   { id: 4, label: 'Pain', order: 7 },
-   { id: 5, label: 'Epistemology × Embodiment', order: 2 },
+   { id: 5, label: 'Epistemology\n×\nEmbodiment', order: 2 },
  // Node 6: move left (label appears to the left)
 { 
   id: 6,
   label: 'Epistemology\n×\nPain',
   order: 4,
 },
-  { id: 7, label: 'Pain × Language', order: 6 },
+  { id: 7, label: 'Pain\n×\Language', order: 6 },
   // Node 8: move right (label appears to the right)
 { 
   id: 8,
@@ -151,6 +151,7 @@ const positions = {
     groups: {
       core: {
         shape: 'box',
+        size: 30
         color: { background:'#51675d', border:'#38463f' },
         font: { color:'white', size:18, face:'Arial' }
       }
