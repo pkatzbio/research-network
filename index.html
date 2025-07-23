@@ -73,7 +73,7 @@ const nodes = new vis.DataSet([
   { id: 6, label: 'Epistemology x Pain', order: 4 },
   { id: 7, label: 'Pain × Language', order: 6 },
   { id: 8, label: 'Embodiment × Language', order: 8 },
-  { id: 9, label: 'Pain × Language', order: 9 }
+  { id: 9, label: 'Justice', order: 9 }
 ]);
 
 const radius = 300;
@@ -84,9 +84,9 @@ const positions = {
   2: { x: 400, y: 200 },    // Embodiment top right
   3: { x: 400, y: -200 },   // Language bottom right
   4: { x: -400, y: -200 },  // Pain bottom left
-  5: { x: 0, y: 400 },      // E & E
+  5: { x: 0, y: 200 },      // E & E
   6: { x: -400, y: 0 },     // E & P
-  7: { x: 0, y: -400 },   // P & L
+  7: { x: 0, y: -200 },   // P & L
   8: { x: 400, y: 0 },   // E & L
   9: { x: 0, y: 0 }   // Justice
 };
@@ -151,7 +151,7 @@ const network = new vis.Network(document.getElementById('network'), data, option
 
   
   // Apply group assignments 
-const coreIds = [1, 2, 3, 4, 5];
+const coreIds = [1, 2, 3, 4, 9];
 coreIds.forEach(id => {
   nodes.update({ id: id, group: 'core' });
 });
