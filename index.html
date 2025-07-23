@@ -70,11 +70,26 @@ const nodes = new vis.DataSet([
   { id: 3, label: 'Language', order: 5 },
   { id: 4, label: 'Pain', order: 7 },
    { id: 5, label: 'Epistemology × Embodiment', order: 2 },
-  { id: 6, label: 'Epistemology\n×\nPain', order: 4 },
+ // Node 6: move left (label appears to the left)
+{ 
+  id: 6,
+  label: 'Epistemology\n×\nPain',
+  order: 4,
+  margin: { left: -80 }  // push the label left
+},
   { id: 7, label: 'Pain × Language', order: 6 },
-  { id: 8, label: 'Embodiment\n×\nLanguage', order: 8 },
+  // Node 8: move right (label appears to the right)
+{ 
+  id: 8,
+  label: 'Embodiment\n×\nLanguage',
+  order: 8,
+  margin: { right: -80 }  // push the label right
+},
   { id: 9, label: 'Justice', order: 9 }
 ]);
+
+
+
 
 
 const radius = 300;
