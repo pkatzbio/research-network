@@ -65,30 +65,30 @@
 <script>
  // Define your nodes with explicit order
 const nodes = new vis.DataSet([
-  { id: 1, label: 'Disability', order: 1 },
+  { id: 1, label: 'Epistemology', order: 1 },
   { id: 2, label: 'Embodiment', order: 3 },
-  { id: 3, label: 'Epistemic Justice', order: 5 },
-  { id: 4, label: 'Pain and Empathy', order: 7 },
-  { id: 5, label: 'Disability × Embodiment', order: 2 },
-  { id: 6, label: 'Disability × Epistemic Justice', order: 4 },
-  { id: 7, label: 'Embodiment × Pain and Empathy', order: 6 },
-  { id: 8, label: 'Epistemic Justice × Pain and Empathy', order: 8 },
-  { id: 9, label: 'Disability × Pain and Empathy', order: 9 }
+  { id: 3, label: 'Language', order: 5 },
+  { id: 4, label: 'Pain', order: 7 },
+   { id: 5, label: 'Epistemology × Embodiment', order: 2 },
+  { id: 6, label: 'Epistemology x Pain', order: 4 },
+  { id: 7, label: 'Pain × Language', order: 6 },
+  { id: 8, label: 'Embodiment × Language', order: 8 },
+  { id: 9, label: 'Pain × Language', order: 9 }
 ]);
 
 const radius = 300;
 const center = { x: 0, y: 0 };
 
 const positions = {
-  1: { x: -400, y: 200 },   // Disability top-left
-  2: { x: 400, y: 200 },    // Embodiment top-right
-  3: { x: 400, y: -200 },   // Epistemic Justice bottom-right
-  4: { x: -400, y: -200 },  // Pain and Empathy bottom-left
-  5: { x: 0, y: 200 },      // Disability × Embodiment (between 1 & 2 top)
-  6: { x: 0, y: 0 },        // Disability × Epistemic Justice (center)
-  7: { x: 200, y: -200 },   // Embodiment × Pain and Empathy (between 2 & 4)
-  8: { x: 200, y: -200 },   // Epistemic Justice × Pain and Empathy (between 3 & 4)
-  9: { x: -200, y: -200 }   // Disability × Pain and Empathy (between 1 & 4)
+  1: { x: -400, y: 200 },   // Epistemology top left
+  2: { x: 400, y: 200 },    // Embodiment top right
+  3: { x: 400, y: -200 },   // Language bottom right
+  4: { x: -400, y: -200 },  // Pain bottom left
+  5: { x: 0, y: 400 },      // E & E
+  6: { x: -400, y: 0 },     // E & P
+  7: { x: 0, y: -400 },   // P & L
+  8: { x: 400, y: 0 },   // E & L
+  9: { x: 0, y: 0 }   // Justice
 };
 
   Object.entries(positions).forEach(([id, pos]) => {
@@ -151,7 +151,7 @@ const network = new vis.Network(document.getElementById('network'), data, option
 
   
   // Apply group assignments 
-const coreIds = [1, 2, 3, 4];
+const coreIds = [1, 2, 3, 4, 5];
 coreIds.forEach(id => {
   nodes.update({ id: id, group: 'core' });
 });
