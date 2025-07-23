@@ -75,8 +75,6 @@ const nodes = new vis.DataSet([
   id: 6,
   label: 'Epistemology\n×\nPain',
   order: 4,
-  font: { vadjust: -60 },
-  margin: { left: -200 }  // push the label left
 },
   { id: 7, label: 'Pain × Language', order: 6 },
   // Node 8: move right (label appears to the right)
@@ -84,8 +82,6 @@ const nodes = new vis.DataSet([
   id: 8,
   label: 'Embodiment\n×\nLanguage',
   order: 8,
-  font: { vadjust: -60 },
-  margin: { right: -200 }  // push the label right
 },
   { id: 9, label: 'Justice', order: 9 }
 ]);
@@ -143,8 +139,8 @@ const positions = {
       navigationButtons: true
     },
     nodes: {
-      shape: 'dot',
-      size: 50,
+      shape: 'ellipse',
+      size: 30,
       font: { size: 16 },
       color: {
         background: '#6B7F77',
