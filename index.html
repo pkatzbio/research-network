@@ -37,6 +37,13 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     z-index: 10000;
   }
+    .modal-content ul {
+      text-align: left;
+      padding-left: 20px;
+    }
+    .modal-content li {
+      margin-bottom: 8px;
+    }
 </style>
 </head>
 <body>
@@ -169,52 +176,90 @@ coreIds.forEach(id => {
 
   
     // -- Pop-up logic --
-  const nodeInfo = {
-    1: { title:'Epistemology', description:'...', publications:['Pub A','Pub B'] },
-    2: { title:'Embodiment', description:'...', publications:['Pub A','Pub B'] },
-    3: { title:'Language', description:'...', publications:['Pub A'] },
-    4: { title:'Pain', description:'...', publications:['Pub A'] },
-    5: { title:'Epistemology and Embodiment', description:'...', publications:['Placeholder'] },
-    6: { title:'Pain and Epistemology', description:'...', publications:['Placeholder'] },
-    7: { title:'Pain and Language', description:'...', publications:['Reading Bodies in Victorian Fiction: Associationism, Empathy, and Literary Authority. Edinburgh, Scotland. Edinburgh UP 2022']},
-    8: { title:'Language and Embodiment', description:'...', publications:['Placeholder'] },
-    9: { title:'Justice', description: '...' },
+ // Publication info with HTML-capable data
+    const nodeInfo = {
+      1: {
+        title: 'Epistemology',
+        description: 'Some description here.',
+        publications: [
+          {
+            title: 'Knowing and Doing',
+            journal: 'Journal of Theory',
+            url: 'https://example.com/knowing-doing'
+          },
+          {
+            title: 'Epistemic Authority',
+            journal: 'Philosophy Studies',
+            url: 'https://example.com/epistemic-authority'
+          }
+        ]
+      },
+      // ... similar structure for other nodes ...
+      6: {
+        title: 'Epistemology × Pain',
+        description: 'Intersection of epistemology and pain.',
+        publications: [
+          {
+            title: 'Experiencing Pain in Knowledge',
+            journal: 'Medical Epistemology',
+            url: 'https://example.com/epi-pain'
+          }
+        ]
+      },
+      8: {
+        title: 'Embodiment × Language',
+        description: 'Intersection of embodiment and language.',
+        publications: [
+          {
+            title: 'Epistemic Justice and the Language-Game of Dignity: From Ontology to Ordinary Language Epistemology.',
+            journal: 'Theoretical Med and Bioethics',
+            url: 'https://link.springer.com/article/10.1007/s11017-025-09729-y'
+          }
+        ]
+      }
+      // Add others as needed...
     };
-  
-  network.on('click', params => {
-  if (params.nodes.length === 1) {
-    const nodeId = params.nodes[0];
-    const info = nodeInfo[nodeId];
-    if (!info) return;
 
-    // Zoom and center on the clicked node
-    network.focus(nodeId, {
-      scale: 1.5,
-      animation: { duration: 500, easingFunction: 'easeInOutQuad' }
+    network.on('click', params => {
+      if (params.nodes.length === 1) {
+        const nodeId = params.nodes[0];
+        const info = nodeInfo[nodeId];
+        if (!info) return;
+
+        // Zoom and center
+        network.focus(nodeId, {
+          scale: 1.5,
+          animation: { duration: 500, easingFunction: 'easeInOutQuad' }
+        });
+
+        setTimeout(() => {
+          document.getElementById('modal-title').textContent = info.title;
+          document.getElementById('modal-description').textContent = info.description;
+
+          const ul = document.getElementById('modal-publications');
+          ul.innerHTML = '';
+
+          info.publications.forEach(pub => {
+            const li = document.createElement('li');
+            // Use innerHTML to allow tags
+            li.innerHTML =
+              `<a href="${pub.url}" target="_blank" style="text-decoration:none; color:inherit;">${pub.title}</a>` +
+              ` &mdash; <em>${pub.journal}</em>`;
+            ul.appendChild(li);
+          });
+
+          document.getElementById('myModal').style.display = 'block';
+        }, 600);
+      }
     });
 
-    // After zoom animation completes, show the modal
-    setTimeout(() => {
-      document.getElementById('modal-title').textContent = info.title;
-      document.getElementById('modal-description').textContent = info.description;
-      const ul = document.getElementById('modal-publications');
-      ul.innerHTML = '';
-      info.publications.forEach(pub => {
-        const li = document.createElement('li');
-        li.textContent = pub;
-        ul.appendChild(li);
-      });
-      document.getElementById('myModal').style.display = 'block';
-    }, 600); // Delay slightly longer than animation duration
-   }
-});
- window.addEventListener('click', event => {
-  const modal = document.getElementById('myModal');
-  if (event.target === modal) {
-    modal.style.display = 'none';
-  }
-});
-</script>
+    window.addEventListener('click', event => {
+      const modal = document.getElementById('myModal');
+      if (event.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
 
+  </script>
 </body>
 </html>
