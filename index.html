@@ -212,6 +212,7 @@ coreIds.forEach(id => {
         publications: [
           {
             title: 'Epistemic Justice and the Language-Game of Dignity: From Ontology to Ordinary Language Epistemology.',
+            date: '(2025.)',
             journal: 'Theoretical Med and Bioethics',
             url: 'https://link.springer.com/article/10.1007/s11017-025-09729-y'
           }
@@ -243,8 +244,8 @@ coreIds.forEach(id => {
             const li = document.createElement('li');
             // Use innerHTML to allow tags
             li.innerHTML =
-              `<a href="${pub.url}" target="_blank" style="text-decoration:none; color:inherit;">${pub.title}</a>` +
-              ` &mdash; <em>${pub.journal}</em>`;
+              `<a href="${pub.url}" target="_blank" style="text-decoration:none; color:inherit;">${pub.title}</a>` + ${pub.date} +
+              ` <em>${pub.journal}</em>`;
             ul.appendChild(li);
           });
 
