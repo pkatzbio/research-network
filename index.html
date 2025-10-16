@@ -348,38 +348,38 @@ coreIds.forEach(id => {
           const ul = document.getElementById('modal-publications');
           ul.innerHTML = '';
 
-         info.publications.forEach(pub => {
-  const li = document.createElement('li');
+      info.publications.forEach(pub => {
+      const li = document.createElement('li');
 
-    if (pub.clickable && pub.url) {
-    // clickable version
-    li.innerHTML =
-      `<a href="${pub.url}" target="_blank" style="text-decoration:none; color:inherit;">${pub.title}</a>` +
-      ` <em>${pub.journal}</em>`;
-   } else {
-    // Non-clickable: just plain text
-    const titleNode = document.createTextNode(pub.title + ' ');
-    li.appendChild(titleNode);
-    if (pub.journal) {
-      const em = document.createElement('em');
-      em.textContent = pub.journal;
-      li.appendChild(em);
-    }
-
-    // optional: style differently
-    li.style.color = '#888888'; 
-    }
-
-  ul.appendChild(li);
-});
-
-    window.addEventListener('click', event => {
-      const modal = document.getElementById('myModal');
-      if (event.target === modal) {
-        modal.style.display = 'none';
+      if (pub.clickable && pub.url) {
+        li.innerHTML =
+          `<a href="${pub.url}" target="_blank" style="text-decoration:none; color:inherit;">${pub.title}</a>` +
+          ` <em>${pub.journal}</em>`;
+      } else {
+        const titleNode = document.createTextNode(pub.title + ' ');
+        li.appendChild(titleNode);
+        if (pub.journal) {
+          const em = document.createElement('em');
+          em.textContent = pub.journal;
+          li.appendChild(em);
+        }
+        li.style.color = '#888888';
       }
-    });
 
-  </script>
+      ul.appendChild(li);
+    });  
+
+    } 
+
+  ); 
+
+  window.addEventListener('click', event => {
+    const modal = document.getElementById('myModal');
+    if (event.target === modal) {
+      modal.style.display = 'none';
+    }
+  });
+
+</script>
 </body>
 </html>
