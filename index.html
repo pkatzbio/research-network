@@ -81,10 +81,6 @@ const nodes = new vis.DataSet([
   { id: 9, label: 'Justice', order: 9, chosen: false }
 ]);
 
-
-
-
-
 const radius = 300;
 const center = { x: 0, y: 0 };
 
@@ -100,7 +96,7 @@ const positions = {
   9: { x: 0, y: 0 }   // Justice
 };
 
-  Object.entries(positions).forEach(([id, pos]) => {
+Object.entries(positions).forEach(([id, pos]) => {
   nodes.update({
     id: Number(id),
     x: pos.x,
@@ -109,60 +105,61 @@ const positions = {
   });
 });
 
-  const edges = new vis.DataSet([
+const edges = new vis.DataSet([
   { from: 1, to: 3 },
   { from: 1, to: 5 },
   { from: 1, to: 5 },
   { from: 1, to: 2 },
   { from: 1, to: 4 },
- { from: 1, to: 9 },
- { from: 1, to: 3 },
-   { from: 3, to: 7 },
+  { from: 1, to: 9 },
+  { from: 1, to: 3 },
+  { from: 3, to: 7 },
   { from: 3, to: 2 },
   { from: 4, to: 7 },
-    { from: 2, to: 9 },
-    { from: 4, to: 9 },
-  ]);
-  // -- Network options --
-  const options = {
-    physics: { enabled: false },
-    interaction: {
-      hover: true,
-      hoverConnectedEdges: false,
-      selectConnectedEdges: false,
-      dragView: true,
-      zoomView: true,
-      navigationButtons: true
-    },
-    nodes: {
-      shape: 'ellipse',
-      size: 30,
-      font: { color: 'white', size: 16, face:'Helvetica Neue'},
-      color: {
-        background: '#6B7F77',
-        border: '#51675d'
-      }
-     },
-    edges: { 
-      smooth: false, 
-      hoverWidth: 0,    // Prevent highlight thickening
-      selectionWidth: 0 // Prevent highlight on click
-            },
-     groups: {
-  core: {
-    shape: 'box',
+  { from: 2, to: 9 },
+  { from: 4, to: 9 },
+]);
+
+// -- Network options --
+const options = {
+  physics: { enabled: false },
+  interaction: {
+    hover: true,
+    hoverConnectedEdges: false,
+    selectConnectedEdges: false,
+    dragView: true,
+    zoomView: true,
+    navigationButtons: true
+  },
+  nodes: {
+    shape: 'ellipse',
+    size: 30,
+    font: { color: 'white', size: 16, face:'Helvetica Neue'},
     color: {
-      background: '#3f5248',  // darker, more muted than #51675d
-      border: '#2d3e35'
-    },
-    font: {
-      color: '#bbbbbb',  // light grey instead of bright white
-      size: 28,
-      face: 'Helvetica Neue'
+      background: '#6B7F77',
+      border: '#51675d'
     }
-  }
+   },
+  edges: { 
+    smooth: false, 
+    hoverWidth: 0,    // Prevent highlight thickening
+    selectionWidth: 0 // Prevent highlight on click
+          },
+   groups: {
+ core: {
+   shape: 'box',
+   color: {
+     background: '#3f5248',  // darker, more muted than #51675d
+     border: '#2d3e35'
+   },
+   font: {
+     color: '#bbbbbb',  // light grey instead of bright white
+     size: 28,
+     face: 'Helvetica Neue'
+   }
+ }
 }
-  };
+};
 
 const data = { nodes, edges };
 const network = new vis.Network(document.getElementById('network'), data, options);
@@ -368,6 +365,10 @@ coreIds.forEach(id => {
 
       ul.appendChild(li);
     });  
+
+      // show the modal after populating it
+      document.getElementById('myModal').style.display = 'block';
+    }, 250);
 
     } 
 
