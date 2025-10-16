@@ -277,7 +277,8 @@ coreIds.forEach(id => {
             clickable: true
           },
            {
-            title: '(2023). Second Hand Politics: Sartorial Culture, Socialism, and the Work of the Novel in Walter Besant’s <em>Children of Gibeon</em>.',
+            date: '(2023).',
+            title: 'Second Hand Politics: Sartorial Culture, Socialism, and the Work of the Novel in Walter Besant’s <em>Children of Gibeon</em>.',
             journal: 'Political and Sartorial Styles in Britain and Its	Colonies, 1840–1926',
             url: 'https://manchesteruniversitypress.co.uk/9781526153074/',
             clickable: true
@@ -350,10 +351,10 @@ coreIds.forEach(id => {
 
       if (pub.clickable && pub.url) {
         li.innerHTML =
-          `<a href="${pub.url}" target="_blank" style="text-decoration:none; color:inherit;">${pub.title}</a>` +
-          ` <em>${pub.journal}</em>`;
+          `${pub.date}` + <a href="${pub.url}" target="_blank" style="text-decoration:none; color:inherit;">${pub.title}</a>` +
+          `<em>${pub.journal}</em>`;
       } else {
-        const titleNode = document.createTextNode(pub.title + ' ');
+        const titleNode = document.createTextNode(pub.date + pub.title + ' ');
         li.appendChild(titleNode);
         if (pub.journal) {
           const em = document.createElement('em');
