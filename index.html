@@ -129,6 +129,7 @@ const positions = {
     interaction: {
       hover: true,
       hoverConnectedEdges: false,
+      selectConnectedEdges: false,
       dragView: true,
       zoomView: true,
       navigationButtons: true
@@ -142,19 +143,43 @@ const positions = {
         border: '#51675d'
       }
      },
-    edges: { smooth: false },
-    groups: {
-      core: {
-        shape: 'box',
-        color: { background:'#51675d', border:'#38463f' },
-        font: { color:'white', size:30, face:'Helvetica Neue' }
-      }
+    edges: { 
+      smooth: false, 
+      hoverWidth: 0,    // Prevent highlight thickening
+      selectionWidth: 0 // Prevent highlight on click
+            },
+     groups: {
+  core: {
+    shape: 'box',
+    color: {
+      background: '#3f5248',  // darker, more muted than #51675d
+      border: '#2d3e35'
+    },
+    font: {
+      color: '#bbbbbb',  // light grey instead of bright white
+      size: 28,
+      face: 'Helvetica Neue'
     }
+  }
+}
   };
 
 const data = { nodes, edges };
 const network = new vis.Network(document.getElementById('network'), data, options);
 
+network.on("hoverNode", params => {
+  const id = params.node;
+  // if core node, set default cursor, else pointer
+  if ([1,2,3,4,9].includes(id)) {
+    network.canvas.body.container.style.cursor = "default";
+  } else {
+    network.canvas.body.container.style.cursor = "pointer";
+  }
+});
+network.on("blurNode", params => {
+  // reset cursor when leaving any node
+network.canvas.body.container.style.cursor = "default";
+});
   
   // Apply group assignments 
 const coreIds = [1, 2, 3, 4, 9];
@@ -202,12 +227,10 @@ coreIds.forEach(id => {
            {
             title: '(Forthcoming). The Mechanics of Pain: Associationism, Motive, and Action in <em>Heart and Science</em>.',
             journal: 'Science and Literature in the 19th Century',
-            url: ''
-          },
-        {
+            },
+          {
             title: '(Forthcoming). When “Good-Enough” Treatment is not Good Enough: Pain-Related Motivational Deficit and Epistemic Deflection in the Treatment of Gynecological Pain.',
             journal: 'Ken Inst Eth J',
-            url: ''
           },  
           {
             title: '(2025). ‘I am in pain’: neuroethics, philosophy of language, and the representation of pain.',
@@ -217,7 +240,6 @@ coreIds.forEach(id => {
           {
             title: '(In progress). Secularism, Christianity, and the Work of Suffering in Conversations about Withdrawal of Lifesaving Treatment',
             journal: 'Clinical Ethics Consultation in a Global Context',
-            url: ''
           },
         ]
       },
