@@ -327,64 +327,57 @@ coreIds.forEach(id => {
       ]
     }
   };
-    network.on('click', params => {
-      if (params.nodes.length === 1) {
-        const nodeId = params.nodes[0];
-        const info = nodeInfo[nodeId];
-        if (!info) return;
+ network.on('click', params => {
+  if (params.nodes.length === 1) {
+    const nodeId = params.nodes[0];
+    const info = nodeInfo[nodeId];
+    if (!info) return;
 
-        // Zoom and center
-        network.focus(nodeId, {
-          scale: 1.5,
-          animation: { duration: 500, easingFunction: 'easeInOutQuad' }
-        });
+    // Zoom and center
+    network.focus(nodeId, {
+      scale: 1.5,
+      animation: { duration: 500, easingFunction: 'easeInOutQuad' }
+    });
 
-       setTimeout(() => {
-  document.getElementById('modal-title').textContent = info.title;
+    setTimeout(() => {
+      document.getElementById('modal-title').textContent = info.title;
 
-  const ul = document.getElementById('modal-publications');
-  ul.innerHTML = '';
+      const ul = document.getElementById('modal-publications');
+      ul.innerHTML = '';
 
-  info.publications.forEach(pub => {
-    const li = document.createElement('li');
+      info.publications.forEach(pub => {
+        const li = document.createElement('li');
 
-    if (pub.clickable && pub.url) {
-      // clickable: show date, blue underlined link, then journal
-      li.innerHTML = `
-        ${pub.date} 
-        <a href="${pub.url}" target="_blank" style="color: blue; text-decoration: underline;">
-          ${pub.title}
-        </a> 
-        <em>${pub.journal}</em>
-      `;
-    } else {
-      // non-clickable: show date + title in plain text + journal
-      const titleNode = document.createTextNode(pub.date + ' ' + pub.title + ' ');
-      li.appendChild(titleNode);
-      if (pub.journal) {
-        const em = document.createElement('em');
-        em.textContent = pub.journal;
-        li.appendChild(em);
-      }
-      li.style.color = '#000000';  // black for non-clickables
-    }
+        if (pub.clickable && pub.url) {
+          li.innerHTML = `
+            ${pub.date} 
+            <a href="${pub.url}" target="_blank" style="color: blue; text-decoration: underline;">
+              ${pub.title}
+            </a> 
+            <em>${pub.journal}</em>
+          `;
+        } else {
+          const titleNode = document.createTextNode(pub.date + ' ' + pub.title + ' ');
+          li.appendChild(titleNode);
+          if (pub.journal) {
+            const em = document.createElement('em');
+            em.textContent = pub.journal;
+            li.appendChild(em);
+          }
+          li.style.color = '#000000';  // black for non-clickables
+        }
 
-    ul.appendChild(li);
-  });
-}, 600);
+        ul.appendChild(li);
+      });
 
       // show the modal after populating it
       document.getElementById('myModal').style.display = 'block';
-    } 250;
+    }, 600);  // ← close setTimeout with ), and time in ms
 
-    }; 
-});
-  window.addEventListener('click', event => {
-    const modal = document.getElementById('myModal');
-    if (event.target === modal) {
-      modal.style.display = 'none';
-    }
-  });
+  }  // ← close `if (params.nodes.length === 1)`
+
+}); // ← close network.on('click', …)
+
 
 </script>
 </body>
