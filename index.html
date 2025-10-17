@@ -351,7 +351,7 @@ coreIds.forEach(id => {
 
       if (pub.clickable && pub.url) {
         li.innerHTML =
-          `${pub.date}` + <a href="${pub.url}" target="_blank" style="text-decoration:none; color:inherit;"${pub.title}</a>` +
+          `${pub.date}` + <a> href="${pub.url}" target="_blank" style="text-decoration:none; color:inherit;"${pub.title}</a>` +
           `<em>${pub.journal}</em>`;
       } else {
         const titleNode = document.createTextNode(pub.date + pub.title + ' ');
