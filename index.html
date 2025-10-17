@@ -61,11 +61,19 @@
 <!-- Keep your modal HTML here if you're using popups -->
 <div id="myModal" class="modal">
   <div class="modal-content">
-    <span class="close" onclick="document.getElementById('myModal').style.display='none'">&times;</span>
+    <!-- you can remove or hide the top “×” if you prefer -->
     <h2 id="modal-title"></h2>
     <ul id="modal-publications"></ul>
+
+    <!-- the new Close link -->
+    <div style="margin-top: 16px; text-align: center;">
+      <a id="modal-close-link" href="#" style="color: blue; text-decoration: underline; cursor: pointer;">
+        Close
+      </a>
+    </div>
   </div>
 </div>
+
 
 <script>
  // Define your nodes with explicit order
@@ -339,6 +347,12 @@ coreIds.forEach(id => {
       animation: { duration: 500, easingFunction: 'easeInOutQuad' }
     });
 
+  document.getElementById('modal-close-link').addEventListener('click', event => {
+  event.preventDefault();
+  document.getElementById('myModal').style.display = 'none';
+});
+
+    
     setTimeout(() => {
       document.getElementById('modal-title').textContent = info.title;
 
@@ -378,6 +392,14 @@ coreIds.forEach(id => {
 
 }); // ← close network.on('click', …)
 
+  window.addEventListener('click', event => {
+  const modal = document.getElementById('myModal');
+  const modalContent = document.querySelector('.modal-content');
+  // If the click target is the modal overlay (not the content), close it
+  if (event.target === modal) {
+    modal.style.display = 'none';
+  }
+});
 
 </script>
 </body>
